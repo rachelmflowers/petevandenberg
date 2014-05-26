@@ -1,8 +1,8 @@
 /*! Made with Bones: http://themble.com/bones :) */
 
 /******************************************************************
-Site Name:
-Author:
+Site Name: Pete Vandenberg Builder
+Author: Pixel Play Creative
 
 Stylesheet: Main Stylesheet
 
@@ -15,6 +15,8 @@ Helpful articles on Sass file organization:
 http://thesassway.com/advanced/modular-css-naming-conventions
 
 ******************************************************************/
+
+@import 'compass';
 
 /*********************
 IMPORTING PARTIALS
@@ -67,6 +69,11 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 
 // styles in base.scss
 @import "breakpoints/base";
+
+// page partials
+@import "page-partials/header-nav";
+@import "page-partials/footer";
+@import "page-partials/sidebars";
 
 /*********************
 LARGER MOBILE DEVICES

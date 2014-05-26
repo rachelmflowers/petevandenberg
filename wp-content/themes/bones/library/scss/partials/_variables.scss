@@ -18,7 +18,7 @@ http://0to255.com/
 *********************/
 
 $alert-yellow:      #ebe16f;
-$alert-red:         #fbe3e4;
+$alert-red:         #962d3e;
 $alert-green:       #e6efc2;
 $alert-blue:        #d5edf8;
 
@@ -27,21 +27,24 @@ $white:             #fff;
 
 $light-gray:        #f8f9fa;
 $gray:              #eaedf2;
-$text-color:        #5c6b80;
+$dark-gray:         #161f21;
+$text-color:        #707070;
 $meta-gray:         #9fa6b4;
 
-$tan:               #eceee5;
-
 $green:             #7dd667;
-
-$bones-pink:        #f01d4f;
 $blue:              #2980b9;
 
-$link-color:        $bones-pink;
-$link-hover:        darken($link-color, 9%);
 
 $border-color:      #ccc;
 $disabled-gray:     #cfcfcf;
+
+$cream:             #f9ede1;
+$brown:             #4f2a11;
+$tan:               #853500;
+$dark-blue:         #161f21;
+
+$link-color:        $tan;
+$link-hover:        darken($link-color, 9%);
 
 
 /*

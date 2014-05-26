@@ -16,11 +16,12 @@ GENERAL STYLES
 *********************/
 
 body {
-	font-family: $lato;
+	font-family: $serif;
+	font-weight: 500;
 	font-size: 100%;
 	line-height: 1.5;
 	color: $text-color;
-	background-color: $gray;
+	background-color: $dark-gray;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -69,181 +70,20 @@ style a page via class
 LAYOUT & GRID STYLES
 *********************/
 
+.container {  
+    width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
 .wrap {
-	width: 96%;
 	margin: 0 auto;
 }
 
-/*********************
-LINK STYLES
-*********************/
-
-a, a:visited {
-	color: $link-color;
-
-	/* on hover */
-	&:hover, &:focus {
-		color: $link-hover;
-	}
-
-	/* on click */
-	&:active {
-
-	}
-
-	/* mobile tap color */
-	&:link {
-		/*
-		this highlights links on iPhones/iPads.
-		so it basically works like the :hover selector
-		for mobile devices.
-		*/
-		-webkit-tap-highlight-color : rgba( 0, 0, 0, 0.3 );
-	}
+.red {
+    color: $alert-red;
 }
 
-/******************************************************************
-H1, H2, H3, H4, H5 STYLES
-******************************************************************/
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5 {
-	text-rendering: optimizelegibility;
-	font-weight: 500;
-	/*
-	if you're going to use webfonts, be sure to check your weights
-	http://css-tricks.com/watch-your-font-weight/
-	*/
-
-	/* removing text decoration from all headline links */
-	a {
-		text-decoration: none;
-	}
-}
-
-h1, .h1 {
-	font-size: 2.5em;
-	line-height: 1.333em;
-}
-
-h2, .h2 {
-	font-size: 1.75em;
-	line-height: 1.4em;
-	margin-bottom: 0.375em;
-}
-
-h3, .h3 {
-	font-size: 1.125em;
-}
-
-h4, .h4 {
-	font-size: 1.1em;
-	font-weight: 700;
-}
-
-h5, .h5 {
-	font-size: 0.846em;
-	line-height: 2.09em;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
-
-/*********************
-HEADER STYLES
-*********************/
-
-.header {
-	background-color: $black;
-}
-
-	#logo {
-		margin: 0.75em 0;
-
-		a {
-			color: $white;
-		}
-	}
-
-/*********************
-NAVIGATION STYLES
-*********************/
-
-/*
-all navs have a .nav class applied via
-the wp_menu function; this is so we can
-easily write one group of styles for
-the navs on the site so our css is cleaner
-and more scalable.
-*/
-
-.nav {
-	border-bottom: 0;
-	margin: 0;
-
-	li {
-
-		a {
-			display: block;
-			color: $white;
-			text-decoration: none;
-			padding: 0.75em;
-
-			/*
-			remember this is for mobile ONLY, so there's no need
-			to even declare hover styles here, you can do it in
-			the style.scss file where it's relevant. We want to
-			keep this file as small as possible!
-			*/
-			&:hover, &:focus {
-
-			}
-		}
-
-		&:first-child {}
-
-		&:last-child {}
-
-		/*
-		so you really have to rethink your dropdowns for mobile.
-		you don't want to have it expand too much because the
-		screen is so small. How you manage your menu should
-		depend on the project. Here's some great info on it:
-		http://www.alistapart.com/articles/organizing-mobile/
-		*/
-		ul.sub-menu,
-		ul.children {
-
-			li {
-
-				a {
-					padding-left: 30px;
-
-					&:hover,
-					&:focus {}
-
-					&:link {}
-
-				}
-
-				&:first-child {}
-
-				&:last-child {}
-
-			}
-
-		}
-
-	} /* end .menu li */
-
-	/* highlight current page */
-	li.current-menu-item,
-	li.current_page_item,
-	li.current-page-ancestor {
-
-		a {}
-
-	}  /* end current highlighters */
-
-} /* end .nav */
 
 
 /*********************
@@ -254,15 +94,86 @@ POSTS & CONTENT STYLES
 	margin-top: 1.5em;
 }
 
+#inner-content { 
+    text-align: center;
+
+    #main {
+    	width: 100%;
+    	padding:10px;
+    	margin: 20px auto;
+    	text-align: left;
+    	background-color: rgba(249,237,225,0.85);
+    	border: 2px solid #fff;
+    	@include border-radius(10px);
+    	@include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.5));
+	}
+	
+	.cycle-slideshow {
+	    overflow: visible;
+	    
+	    img {
+    	    border: 1px solid #fff;
+    	    height: 275px;
+    	    width: 775px
+        }
+	}
+	
+	.cycle-pager-container {
+    	bottom: -30px;
+	}
+	
+	.cycle-prev {
+    	margin-left: -38px;
+	}
+	
+	.cycle-next {
+    	margin-right: -38px;
+	}
+	
+	.customproject {
+	    float:right; 	
+	    width: 33%;
+    	background-color: #4e7078;
+    	@include background-image(linear-gradient(#8da9b0, #4e7078));
+    	padding: 10px;
+    	margin: 10px 7px 10px 15px;
+    	border: 1px solid $cream;
+    	@include border-radius(10px);
+    	@include box-shadow(2px 2px 4px 0px rgba(0,0,0,0.5));
+    	
+    	img {
+        	border: 3px solid #161f21; 
+        	margin: 0;
+    	}
+    	
+    	
+    	p {
+        	color: $cream; 
+        	font-size: 18px; 
+        	line-height: 24px; 
+        	margin: 5px 0;
+    	}
+	}
+}
+
 		.hentry {
-			background-color: $white;
-			border-radius: 3px;
-			margin-bottom: 1.5em;
-			border: 1px solid $border-color;
+		    h1 {
+    		    font-size: 1.5rem;
+    		    font-family: $decorative;
+    		    color: $brown;
+    		    margin: 0 0 20px;
+    		    padding-bottom: 5px;
+    		    border-bottom: 1px solid $cream;
+    		    @include box-shadow(0 1px 0 rgba(0,0,0,0.25));
+		    }
 
 			header {
-				border-bottom: 1px solid $light-gray;
-				padding: 1.5em;
+				 margin: 0 0 10px 10px;
+				 float: right;
+				 
+				 img {
+    				 @include border-radius(5px);
+				 }
 			}
 
 			footer {
@@ -311,10 +222,17 @@ POSTS & CONTENT STYLES
 
 		/* entry content */
 		.entry-content {
-			padding: 1.5em 1.5em 0;
 
 			p {
-				margin: 0 0 1.5em;
+				margin: 0 0 1em;
+			}
+			
+			a {
+    			color: $tan;
+    			
+    			&:hover {
+        			color: $text-color;
+    			}
 			}
 
 
@@ -340,7 +258,7 @@ POSTS & CONTENT STYLES
 
 			table {
 				width: 100%;
-				border: 1px solid $gray;
+				border: 1px solid $brown;
 				margin-bottom: 1.5em;
 
 				caption {
@@ -353,16 +271,16 @@ POSTS & CONTENT STYLES
 			}
 
 			tr {
-				border-bottom: 1px solid $gray;
+				border-bottom: 1px solid $brown;
 
 				&:nth-child(even) {
-					background-color: $light-gray;
+					background-color: $cream;
 				}
 			}
 
 			td {
-				padding: 7px;
-				border-right: 1px solid $gray;
+				border-right: 1px solid $brown;
+				padding: 0 5px;
 
 				&:last-child {
 					border-right: 0;
@@ -371,8 +289,8 @@ POSTS & CONTENT STYLES
 
 			th {
 				background-color: $light-gray;
-				border-bottom: 1px solid $gray;
-				border-right: 1px solid $gray;
+				border-bottom: 1px solid $brown;
+				border-right: 1px solid $brown;
 
 				&:last-child {
 					border-right: 0;
@@ -402,7 +320,7 @@ POSTS & CONTENT STYLES
 			}
 
 			img {
-				margin: 0 0 1.5em 0;
+				margin: 0;
 				max-width: 100%;
 				height: auto;
 			}
@@ -817,72 +735,3 @@ COMMENT FORM STYLES
 		margin: 0 20px 1.1em;
 	}
 
-/*********************
-SIDEBARS & ASIDES
-*********************/
-
-.sidebar {}
-
-	.widgettitle {}
-
-	.widget {
-
-		ul {
-
-			li {
-
-				&:first-child {}
-
-				&:last-child {}
-
-				a {}
-
-				/* deep nesting */
-				ul {}
-
-			}
-
-		}
-
-	}
-
-	.no-widgets {
-		background-color: $white;
-		padding: 1.5em;
-		text-align: center;
-		border: 1px solid $border-color;
-		border-radius: 2px;
-		margin-bottom: 1.5em;
-	}
-
-/*********************
-FOOTER STYLES
-*********************/
-
-.footer {
-	clear: both;
-	background-color: $black;
-	color: $light-gray;
-}
-
-	/*
-	if you checked out the link above:
-	http://www.alistapart.com/articles/organizing-mobile/
-	you'll want to style the footer nav
-	a bit more in-depth. Remember to keep
-	it simple because you'll have to
-	override these styles for the desktop
-	view.
-	*/
-	.footer-links {
-
-		ul {
-
-			li {}
-
-		}
-
-	} /* end .footer-links */
-
-
-	.copyright {}

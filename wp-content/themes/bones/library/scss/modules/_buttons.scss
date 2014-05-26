@@ -72,3 +72,20 @@ and it will create a button dependant on those variables.
   } // end active
 
 } // end blue button
+
+
+
+.button {
+	color: #4e7078;
+	font: 19px $decorative;
+	display: inline-block;
+  	padding: 0 12px 0 0; 
+	background: image-url('buttonright.png') right top no-repeat;
+    
+    span {	
+    	line-height: 40px;
+    	display: block;
+    	padding-left: 10px;
+    	background: image-url('buttonleft.png') left top no-repeat; 
+    }
+}
