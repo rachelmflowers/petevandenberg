@@ -1,0 +1,105 @@
+/*********************
+HEADER STYLES
+*********************/
+
+.header {
+
+	#logo {
+		margin: 0.75em 0;
+	}
+	
+	h1 {
+    	color: #fff;
+    	text-align: center;
+    	width: 500px; 
+    	float: right;
+    	margin-top: 50px;
+	}
+}
+
+/*********************
+NAVIGATION STYLES
+*********************/
+
+/*
+all navs have a .nav class applied via
+the wp_menu function; this is so we can
+easily write one group of styles for
+the navs on the site so our css is cleaner
+and more scalable.
+*/
+
+#main-nav {
+	border-bottom: 0;
+	margin: 0;
+	background: image-url('navbg.png') no-repeat; 
+	height:60px; 
+	text-align: center;
+	@include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.5));
+
+    ul {
+        margin: 0;
+        display: inline-block;
+        
+    	li {
+            display: inline; 
+            line-height: 62px; 
+            padding: 0 25px;
+            
+    		a {
+    			font: 700 18px $serif; 
+    			color: #4f2a11; 
+    			padding: 5px 15px;
+    			
+    			&:hover {
+        			color: white;
+    			}
+    		}
+    
+    		&:first-child {}
+    
+    		&:last-child {}
+    
+    		/*
+    		so you really have to rethink your dropdowns for mobile.
+    		you don't want to have it expand too much because the
+    		screen is so small. How you manage your menu should
+    		depend on the project. Here's some great info on it:
+    		http://www.alistapart.com/articles/organizing-mobile/
+    		*/
+    		ul.sub-menu,
+    		ul.children {
+    
+    			li {
+    
+    				a {
+    					padding-left: 30px;
+    
+    					&:hover,
+    					&:focus {}
+    
+    					&:link {}
+    
+    				}
+    
+    				&:first-child {}
+    
+    				&:last-child {}
+    
+    			}
+    
+    		}
+    
+    	} /* end .menu li */
+	}
+
+	/* highlight current page */
+	li.current-menu-item,
+	li.current_page_item,
+	li.current-page-ancestor {
+
+		a {}
+
+	}  /* end current highlighters */
+
+} /* end .nav */

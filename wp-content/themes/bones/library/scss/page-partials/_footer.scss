@@ -1,0 +1,71 @@
+/*********************
+FOOTER STYLES
+*********************/
+
+.footer {
+	position:absolute;
+	top: 1325px;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 50px;
+	
+	.page-id-28 & {
+    	top: 1540px;
+	}
+	
+	.wrap {
+    	width: 900px;
+        margin: 0 auto;
+    	background: image-url('footerbg.png') repeat-x bottom center;
+    	border: 2px solid #fff;
+    	@include border-radius(10px);	
+    	@include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.5));
+    	text-align: left;
+        height: 125px;
+	}
+	
+	#footer-nav {
+    	margin: 10px 15px;
+    	color: #4e7078; 
+    	float: right;
+    	display: inline-block;
+    	
+    	ul {
+        	margin-bottom: 10px;
+        	
+        	li {
+            	padding: 7px 7px; 
+            	display: inline;
+        	}
+    	}
+	}
+	
+	#footer-contact {
+    	margin: 10px 15px;
+    	
+    	p {
+        	margin-bottom: 0;
+        	
+        	img {
+            	vertical-align: middle; 
+            	margin-bottom: 5px;
+        	}
+    	}
+	}
+
+
+	.copyright {
+    	float: right;
+    	font-size: 11px; 
+    	color: #636363; 
+    	margin-top: -20px;
+	}
+        	
+    .pixelplay {
+        position: relative;
+        bottom: -20px;
+        font: italic 600 12px $serif;
+        color: #f9ede1;
+        text-shadow: 1px 1px rgba(0,0,0,0.5);
+    }
+}
