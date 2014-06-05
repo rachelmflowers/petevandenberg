@@ -1,0 +1,864 @@
+<krpano onstart="loadtourscene(livingroom)" enablegyro="false" embeddedinfo="false" >
+    <events 
+        onenterfullscreen="set(plugin[fullscreen].visible, false);
+                            set(plugin[fullscreen].enabled, false);
+                            set(plugin[fullscreenexit].visible, true);
+                            set(plugin[fullscreenexit].enabled, true);"
+        onexitfullscreen="set(plugin[fullscreen].visible, true);
+                            set(plugin[fullscreen].enabled, true);
+                            set(plugin[fullscreenexit].visible, false);
+                            set(plugin[fullscreenexit].enabled, false);"
+        onclick="startautotour(false);"
+        onloadcomplete="startscene();"
+        onresize="resizepopup(get(plugin[popupbg].activestill));"
+        />
+
+    <preview type="grid(sphere)" />
+    <display details="40" />
+    
+    <autorotate enabled="false" tofov="70" accel="2" speed="7"/>
+    
+    <plugin name="fullscreen" enabled="true" keep="true" zorder="99"
+        align="rightbottom" url="images/fullscreen4.png" capture="true"
+        crop="0|0|50|40" devices="desktop|ipad"
+        onclick="set(fullscreen, true);"
+        />
+    <plugin name="fullscreenexit" enabled="false" visible="false" keep="true" zorder="99"
+        align="rightbottom" url="images/fullscreen4.png" capture="true"
+        crop="0|40|50|40" devices="desktop|ipad"
+        onclick="set(fullscreen, false);"
+        />
+    <plugin name="logo" keep="true" zorder="99" blendmode="normal"
+        align="leftbottom" url="images/hc.png" capture="true"
+        onloaded="if(device.mobile, set(scale, 2));"
+        />
+    <plugin name="startautorotate" enabled="true" visible="false" keep="true" zorder="98"
+        align="bottom" url="images/playpause2.png" capture="true"
+        crop="0|0|30|30" y="5" alpha="0.9"
+        onclick="startautotour(true);"
+        onloaded="if(device.mobile, set(scale, 2));"
+        />
+    <plugin name="pauseautorotate" enabled="true" visible="true" keep="true" zorder="98"
+        align="bottom" edge="bottom" url="images/playpause2.png" capture="true"
+        crop="0|30|30|30" y="5" alpha="0.9"
+        onclick="startautotour(false);"
+        onloaded="if(device.mobile, set(scale, 2));"
+        />
+    <plugin name="gyroon" enabled="false" visible="false" keep="true" zorder="98"
+        align="leftbottom" edge="bottom" url="images/gyro.png" capture="true"
+        crop="0|0|80|20" alpha="0.9" x="25%" y="5"
+        onclick="set(visible, false); set(plugin[gyrooff].visible, true); set(plugin[gyro].enabled, true);"
+        onloaded="if(device.mobile, set(scale, 2); set(align, rightbottom));"
+        />
+    <plugin name="gyrooff" enabled="false" visible="false" keep="true" zorder="98"
+        align="leftbottom" edge="bottom" url="images/gyro.png" capture="true"
+        crop="0|20|80|20" alpha="0.9" x="25%" y="5"
+        onclick="set(visible, false); set(plugin[gyroon].visible, true); set(plugin[gyro].enabled, false);"
+        onloaded="if(device.mobile, set(scale, 2); set(align, rightbottom));"
+        />
+
+
+    <!--plugin name="instructions" enabled="true" visible="true" keep="true" zorder="98"
+        align="center" url="images/computerinstructions.png" 
+        alturl="images/ipadinstructions.png"453
+        capture="true" onclick="startautotour(false);"
+        /-->
+        
+    <action name="startautotour">
+        if(%1, set(opp, false), set(opp, true));
+        set(autorotate.enabled, %1);
+        set(plugin[pauseautorotate].visible, %1);
+        set(plugin[startautorotate].visible, get(opp));
+    </action>
+        
+    <control mousespeed="1.75" 
+             touchfriction="0.9" 
+             mouseyfriction="0.3" />
+        
+    <cursors url="images/qtvr-cursors.png"
+             type="8way"
+             move    = " 0|0|16|16"
+             drag    = "16|0|16|16"
+             arrow_u = "32|0|16|16"
+             arrow_d = "48|0|16|16"
+             arrow_l = "64|0|16|16"
+             arrow_r = "80|0|16|16"
+             arrow_lu= "96|0|16|16"
+             arrow_ru="112|0|16|16"
+             arrow_rd="128|0|16|16"
+             arrow_ld="144|0|16|16"
+             />
+    <plugin name="gyro" devices="html5"
+            url="plugins/gyro.js" 
+            keep="true"
+            enabled="false"
+            camroll="true"
+            friction="0.5"
+            velastic="0.2"
+            vrelative="false"
+            onavailable="set(plugin[gyroon].enabled, true); set(plugin[gyrooff].enabled, true);if(get(enablegyro),set(enabled,true);set(plugin[gyrooff].visible, true), set(plugin[gyroon].visible, true));"
+            />  
+            
+    <plugin name="popupbg" scale9grid="7|7|6|6" url="%SWFPATH%images/imagebg.png" align="center"
+        zorder="99" enabled="false" visible="false" keep="true" activestill="popupbg" />
+
+    <action name="loadtourscene">
+        loadscene(%1,null,MERGE);
+        lookat(0,0,70);
+        set(plugin[roomspanel].visible, false);
+    </action>
+    <action name="popup">
+        set(autorotate.enabled,false);
+        set(plugin[popupbg].activestill, %1);
+        resizepopup(%1);
+        set(plugin[popupbg].enabled, true);
+        set(plugin[popupbg].visible, true);
+        set(plugin[%1].enabled, true);
+        set(plugin[%1].visible, true);
+    </action>
+    <action name="popdown">
+        set(plugin[popupbg].enabled, false);
+        set(plugin[popupbg].visible, false);
+        set(plugin[%1].enabled, false);
+        set(plugin[%1].visible, false);
+    </action>
+    <action name="resizepopup">
+        plugin[%1].resetsize();
+        div(aspectratio, stagewidth, stageheight);
+        div(iaspectratio, plugin[%1].width, plugin[%1].height);
+        if(iaspectratio GT aspectratio, div(iscale, stagewidth, plugin[%1].width), div(iscale, stageheight, plugin[%1].height));
+        mul(plugin[popupbg].width, plugin[%1].width, iscale);
+        mul(plugin[popupbg].height, plugin[%1].height, iscale);
+        mul(plugin[popupbg].width, plugin[popupbg].width, 0.95);
+        mul(plugin[popupbg].height, plugin[popupbg].height, 0.95);
+        sub(plugin[%1].width, plugin[popupbg].width, 14);
+        sub(plugin[%1].height, plugin[popupbg].height, 14);
+    </action>
+    <action name="startscene">
+        startautotour(true);
+    </action>
+    
+    
+    
+    <style name="popups"
+        align="center" zorder="100"  parent="popupbg"
+        enabled="false" visible="false" keep="true"
+        onhover="showtext(Click to close)"
+        />
+    <data name="locationID">vandenberg</data>
+
+    
+        <data name="bedroomstill">Bedroom</data>
+        <plugin name="bedroomstill" style="popups"
+        url="stills/bedroom.jpg"  
+        onclick="action(popdown, bedroomstill)" />
+
+
+        <data name="bedroom1still">Bedroom</data>
+        <plugin name="bedroom1still" style="popups"
+        url="stills/bedroom1.jpg"  
+        onclick="action(popdown, bedroom1still)" />
+
+
+        <data name="bathroomstill">Bathroom</data>
+        <plugin name="bathroomstill" style="popups"
+        url="stills/bathroom.jpg"  
+        onclick="action(popdown, bathroomstill)" />
+
+
+        <data name="bathroom1still">Bathroom</data>
+        <plugin name="bathroom1still" style="popups"
+        url="stills/bathroom1.jpg"  
+        onclick="action(popdown, bathroom1still)" />
+
+
+        <data name="bedroom2still">Bedroom</data>
+        <plugin name="bedroom2still" style="popups"
+        url="stills/bedroom2.jpg"  
+        onclick="action(popdown, bedroom2still)" />
+    
+    <data name="livingroomtitle">Living Room</data>
+    <scene name="livingroom">
+        <image type="CUBE">
+            <left  url="movies/livingroom/livingroom_l.jpg" />
+            <front  url="movies/livingroom/livingroom_f.jpg" />
+            <right  url="movies/livingroom/livingroom_r.jpg" />
+            <back  url="movies/livingroom/livingroom_b.jpg" />
+            <up  url="movies/livingroom/livingroom_u.jpg" />
+            <down  url="movies/livingroom/livingroom_d.jpg" />
+            <mobile>
+                <left  url="movies/livingroom/mobile_l.jpg" />
+                <front  url="movies/livingroom/mobile_f.jpg" />
+                <right  url="movies/livingroom/mobile_r.jpg" />
+                <back  url="movies/livingroom/mobile_b.jpg" />
+                <up  url="movies/livingroom/mobile_u.jpg" />
+                <down  url="movies/livingroom/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/livingroom/tablet_l.jpg" />
+                <front  url="movies/livingroom/tablet_f.jpg" />
+                <right  url="movies/livingroom/tablet_r.jpg" />
+                <back  url="movies/livingroom/tablet_b.jpg" />
+                <up  url="movies/livingroom/tablet_u.jpg" />
+                <down  url="movies/livingroom/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/livingroom/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-90" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="kitchen_0"
+            onhover="showtext(Kitchen);"
+            onclick="loadtourscene(kitchen);"
+
+            scale="1"
+        ath="93.8803666243916" atv="-0.8437913522589215"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbedroom_1"
+            onhover="showtext(Master Bedroom);"
+            onclick="loadtourscene(masterbedroom);"
+
+            scale="1.0"
+        ath="-54.73299328172584" atv="1.738270566643806"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="recreationroom_2"
+            onhover="showtext(Recreation Room);"
+            onclick="loadtourscene(recreationroom);"
+
+            scale="0.8500000000000002"
+        ath="6.389688151312384" atv="11.85574353432462"  url="images/360_down.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="hall_3"
+            onhover="showtext(Hall);"
+            onclick="loadtourscene(hall);"
+
+            scale="0.7499999999999998"
+        ath="13.196324650435317" atv="-2.8105108794038607"  url="images/360_left.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="kitchentitle">Kitchen</data>
+    <scene name="kitchen">
+        <image type="CUBE">
+            <left  url="movies/kitchen/kitchen_l.jpg" />
+            <front  url="movies/kitchen/kitchen_f.jpg" />
+            <right  url="movies/kitchen/kitchen_r.jpg" />
+            <back  url="movies/kitchen/kitchen_b.jpg" />
+            <up  url="movies/kitchen/kitchen_u.jpg" />
+            <down  url="movies/kitchen/kitchen_d.jpg" />
+            <mobile>
+                <left  url="movies/kitchen/mobile_l.jpg" />
+                <front  url="movies/kitchen/mobile_f.jpg" />
+                <right  url="movies/kitchen/mobile_r.jpg" />
+                <back  url="movies/kitchen/mobile_b.jpg" />
+                <up  url="movies/kitchen/mobile_u.jpg" />
+                <down  url="movies/kitchen/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/kitchen/tablet_l.jpg" />
+                <front  url="movies/kitchen/tablet_f.jpg" />
+                <right  url="movies/kitchen/tablet_r.jpg" />
+                <back  url="movies/kitchen/tablet_b.jpg" />
+                <up  url="movies/kitchen/tablet_u.jpg" />
+                <down  url="movies/kitchen/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/kitchen/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-90" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="livingroom_0"
+            onhover="showtext(Living Room);"
+            onclick="loadtourscene(livingroom);"
+
+            scale="1"
+        ath="43.25845162552565" atv="-1.4858082085386326"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="diningroom_1"
+            onhover="showtext(Dining Room);"
+            onclick="loadtourscene(diningroom);"
+
+            scale="1"
+        ath="160.73516885189073" atv="-0.992236951895986"  url="images/360.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="diningroomtitle">Dining Room</data>
+    <scene name="diningroom">
+        <image type="CUBE">
+            <left  url="movies/diningroom/diningroom_l.jpg" />
+            <front  url="movies/diningroom/diningroom_f.jpg" />
+            <right  url="movies/diningroom/diningroom_r.jpg" />
+            <back  url="movies/diningroom/diningroom_b.jpg" />
+            <up  url="movies/diningroom/diningroom_u.jpg" />
+            <down  url="movies/diningroom/diningroom_d.jpg" />
+            <mobile>
+                <left  url="movies/diningroom/mobile_l.jpg" />
+                <front  url="movies/diningroom/mobile_f.jpg" />
+                <right  url="movies/diningroom/mobile_r.jpg" />
+                <back  url="movies/diningroom/mobile_b.jpg" />
+                <up  url="movies/diningroom/mobile_u.jpg" />
+                <down  url="movies/diningroom/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/diningroom/tablet_l.jpg" />
+                <front  url="movies/diningroom/tablet_f.jpg" />
+                <right  url="movies/diningroom/tablet_r.jpg" />
+                <back  url="movies/diningroom/tablet_b.jpg" />
+                <up  url="movies/diningroom/tablet_u.jpg" />
+                <down  url="movies/diningroom/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/diningroom/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="kitchen_0"
+            onhover="showtext(Kitchen);"
+            onclick="loadtourscene(kitchen);"
+
+            scale="1"
+        ath="-0.31741191874789365" atv="-0.47144596954979834"  url="images/360_right.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="livingroom_1"
+            onhover="showtext(Living Room);"
+            onclick="loadtourscene(livingroom);"
+
+            scale="0.95"
+        ath="117.52432536728972" atv="-1.953664495566672"  url="images/360_left.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="bathroom_2"
+            onhover="showtext(Bathroom);"
+            onclick="action(popup, bathroomstill);"
+
+            scale="0.7499999999999999"
+        ath="102.15984087120484" atv="12.096471241596443"  url="images/camera.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="masterbedroomtitle">Master Bedroom</data>
+    <scene name="masterbedroom">
+        <image type="CUBE">
+            <left  url="movies/masterbedroom/masterbedroom_l.jpg" />
+            <front  url="movies/masterbedroom/masterbedroom_f.jpg" />
+            <right  url="movies/masterbedroom/masterbedroom_r.jpg" />
+            <back  url="movies/masterbedroom/masterbedroom_b.jpg" />
+            <up  url="movies/masterbedroom/masterbedroom_u.jpg" />
+            <down  url="movies/masterbedroom/masterbedroom_d.jpg" />
+            <mobile>
+                <left  url="movies/masterbedroom/mobile_l.jpg" />
+                <front  url="movies/masterbedroom/mobile_f.jpg" />
+                <right  url="movies/masterbedroom/mobile_r.jpg" />
+                <back  url="movies/masterbedroom/mobile_b.jpg" />
+                <up  url="movies/masterbedroom/mobile_u.jpg" />
+                <down  url="movies/masterbedroom/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/masterbedroom/tablet_l.jpg" />
+                <front  url="movies/masterbedroom/tablet_f.jpg" />
+                <right  url="movies/masterbedroom/tablet_r.jpg" />
+                <back  url="movies/masterbedroom/tablet_b.jpg" />
+                <up  url="movies/masterbedroom/tablet_u.jpg" />
+                <down  url="movies/masterbedroom/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/masterbedroom/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="livingroom_0"
+            onhover="showtext(Living Room);"
+            onclick="loadtourscene(livingroom);"
+
+            scale="0.95"
+        ath="-134.69337978618387" atv="0.5973131667801889"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="mastercloset_1"
+            onhover="showtext(Master Closet);"
+            onclick="loadtourscene(mastercloset);"
+
+            scale="0.8999999999999999"
+        ath="-151.9657197642895" atv="4.859098739253158"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbathroom_2"
+            onhover="showtext(Master Bathroom);"
+            onclick="loadtourscene(masterbathroom);"
+
+            scale="1"
+        ath="-172.15459864515117" atv="3.9992591075205617"  url="images/360.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="masterbathroomtitle">Master Bathroom</data>
+    <scene name="masterbathroom">
+        <image type="CUBE">
+            <left  url="movies/masterbathroom/masterbathroom_l.jpg" />
+            <front  url="movies/masterbathroom/masterbathroom_f.jpg" />
+            <right  url="movies/masterbathroom/masterbathroom_r.jpg" />
+            <back  url="movies/masterbathroom/masterbathroom_b.jpg" />
+            <up  url="movies/masterbathroom/masterbathroom_u.jpg" />
+            <down  url="movies/masterbathroom/masterbathroom_d.jpg" />
+            <mobile>
+                <left  url="movies/masterbathroom/mobile_l.jpg" />
+                <front  url="movies/masterbathroom/mobile_f.jpg" />
+                <right  url="movies/masterbathroom/mobile_r.jpg" />
+                <back  url="movies/masterbathroom/mobile_b.jpg" />
+                <up  url="movies/masterbathroom/mobile_u.jpg" />
+                <down  url="movies/masterbathroom/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/masterbathroom/tablet_l.jpg" />
+                <front  url="movies/masterbathroom/tablet_f.jpg" />
+                <right  url="movies/masterbathroom/tablet_r.jpg" />
+                <back  url="movies/masterbathroom/tablet_b.jpg" />
+                <up  url="movies/masterbathroom/tablet_u.jpg" />
+                <down  url="movies/masterbathroom/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/masterbathroom/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbedroom_0"
+            onhover="showtext(Master Bedroom);"
+            onclick="loadtourscene(masterbedroom);"
+
+            scale="1"
+        ath="81.29493366823192" atv="2.4158677087400457"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="mastershower_1"
+            onhover="showtext(Master Shower);"
+            onclick="loadtourscene(mastershower);"
+
+            scale="1"
+        ath="170.61055350472827" atv="12.694237278892125"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="mastercloset_2"
+            onhover="showtext(Master Closet);"
+            onclick="loadtourscene(mastercloset);"
+
+            scale="0.95"
+        ath="-58.892055049600515" atv="-1.3678390058787613"  url="images/360.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="mastershowertitle">Master Shower</data>
+    <scene name="mastershower">
+        <image type="CUBE">
+            <left  url="movies/mastershower/mastershower_l.jpg" />
+            <front  url="movies/mastershower/mastershower_f.jpg" />
+            <right  url="movies/mastershower/mastershower_r.jpg" />
+            <back  url="movies/mastershower/mastershower_b.jpg" />
+            <up  url="movies/mastershower/mastershower_u.jpg" />
+            <down  url="movies/mastershower/mastershower_d.jpg" />
+            <mobile>
+                <left  url="movies/mastershower/mobile_l.jpg" />
+                <front  url="movies/mastershower/mobile_f.jpg" />
+                <right  url="movies/mastershower/mobile_r.jpg" />
+                <back  url="movies/mastershower/mobile_b.jpg" />
+                <up  url="movies/mastershower/mobile_u.jpg" />
+                <down  url="movies/mastershower/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/mastershower/tablet_l.jpg" />
+                <front  url="movies/mastershower/tablet_f.jpg" />
+                <right  url="movies/mastershower/tablet_r.jpg" />
+                <back  url="movies/mastershower/tablet_b.jpg" />
+                <up  url="movies/mastershower/tablet_u.jpg" />
+                <down  url="movies/mastershower/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/mastershower/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-90" vlookatmax="90"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbathroom_0"
+            onhover="showtext(Master Bathroom);"
+            onclick="loadtourscene(masterbathroom);"
+
+            scale="1"
+        ath="-63.09188330949422" atv="5.396357958865984"  url="images/360.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="masterclosettitle">Master Closet</data>
+    <scene name="mastercloset">
+        <image type="CUBE">
+            <left  url="movies/mastercloset/mastercloset_l.jpg" />
+            <front  url="movies/mastercloset/mastercloset_f.jpg" />
+            <right  url="movies/mastercloset/mastercloset_r.jpg" />
+            <back  url="movies/mastercloset/mastercloset_b.jpg" />
+            <up  url="movies/mastercloset/mastercloset_u.jpg" />
+            <down  url="movies/mastercloset/mastercloset_d.jpg" />
+            <mobile>
+                <left  url="movies/mastercloset/mobile_l.jpg" />
+                <front  url="movies/mastercloset/mobile_f.jpg" />
+                <right  url="movies/mastercloset/mobile_r.jpg" />
+                <back  url="movies/mastercloset/mobile_b.jpg" />
+                <up  url="movies/mastercloset/mobile_u.jpg" />
+                <down  url="movies/mastercloset/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/mastercloset/tablet_l.jpg" />
+                <front  url="movies/mastercloset/tablet_f.jpg" />
+                <right  url="movies/mastercloset/tablet_r.jpg" />
+                <back  url="movies/mastercloset/tablet_b.jpg" />
+                <up  url="movies/mastercloset/tablet_u.jpg" />
+                <down  url="movies/mastercloset/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/mastercloset/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbedroom_0"
+            onhover="showtext(Master Bedroom);"
+            onclick="loadtourscene(masterbedroom);"
+
+            scale="1"
+        ath="96.54183169780732" atv="1.8408225339367292"  url="images/360.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="masterbathroom_1"
+            onhover="showtext(Master Bathroom);"
+            onclick="loadtourscene(masterbathroom);"
+
+            scale="1"
+        ath="-159.24915325150346" atv="1.5721400569868451"  url="images/360.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="recreationroomtitle">Recreation Room</data>
+    <scene name="recreationroom">
+        <image type="CUBE">
+            <left  url="movies/recreationroom/recreationroom_l.jpg" />
+            <front  url="movies/recreationroom/recreationroom_f.jpg" />
+            <right  url="movies/recreationroom/recreationroom_r.jpg" />
+            <back  url="movies/recreationroom/recreationroom_b.jpg" />
+            <up  url="movies/recreationroom/recreationroom_u.jpg" />
+            <down  url="movies/recreationroom/recreationroom_d.jpg" />
+            <mobile>
+                <left  url="movies/recreationroom/mobile_l.jpg" />
+                <front  url="movies/recreationroom/mobile_f.jpg" />
+                <right  url="movies/recreationroom/mobile_r.jpg" />
+                <back  url="movies/recreationroom/mobile_b.jpg" />
+                <up  url="movies/recreationroom/mobile_u.jpg" />
+                <down  url="movies/recreationroom/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/recreationroom/tablet_l.jpg" />
+                <front  url="movies/recreationroom/tablet_f.jpg" />
+                <right  url="movies/recreationroom/tablet_r.jpg" />
+                <back  url="movies/recreationroom/tablet_b.jpg" />
+                <up  url="movies/recreationroom/tablet_u.jpg" />
+                <down  url="movies/recreationroom/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/recreationroom/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="livingroom_0"
+            onhover="showtext(Living Room);"
+            onclick="loadtourscene(livingroom);"
+
+            scale="1.0"
+        ath="65.4243975833952" atv="-9.291928323205928"  url="images/360_up.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="bathroom1_1"
+            onhover="showtext(Bathroom);"
+            onclick="action(popup, bathroom1still);"
+
+            scale="0.7499999999999999"
+        ath="-120.55685854469264" atv="12.852074654500024"  url="images/camera_left.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="bedroom2_2"
+            onhover="showtext(Bedroom);"
+            onclick="action(popup, bedroom2still);"
+
+            scale="0.7499999999999998"
+        ath="-109.59019329866334" atv="-7.259444112068502"  url="images/camera_right.png">
+        
+        </hotspot>
+    </scene>
+
+    <data name="halltitle">Hall</data>
+    <scene name="hall">
+        <image type="CUBE">
+            <left  url="movies/hall/hall_l.jpg" />
+            <front  url="movies/hall/hall_f.jpg" />
+            <right  url="movies/hall/hall_r.jpg" />
+            <back  url="movies/hall/hall_b.jpg" />
+            <up  url="movies/hall/hall_u.jpg" />
+            <down  url="movies/hall/hall_d.jpg" />
+            <mobile>
+                <left  url="movies/hall/mobile_l.jpg" />
+                <front  url="movies/hall/mobile_f.jpg" />
+                <right  url="movies/hall/mobile_r.jpg" />
+                <back  url="movies/hall/mobile_b.jpg" />
+                <up  url="movies/hall/mobile_u.jpg" />
+                <down  url="movies/hall/mobile_d.jpg" />
+            </mobile>
+        
+            <!-- tablet pc / ipad images -->
+            <tablet>
+                <left  url="movies/hall/tablet_l.jpg" />
+                <front  url="movies/hall/tablet_f.jpg" />
+                <right  url="movies/hall/tablet_r.jpg" />
+                <back  url="movies/hall/tablet_b.jpg" />
+                <up  url="movies/hall/tablet_u.jpg" />
+                <down  url="movies/hall/tablet_d.jpg" />
+            </tablet>
+        </image>
+        <preview url="movies/hall/preview.jpg" />
+        
+        <view hlookat="0" 
+            vlookat="0" vlookatmin="-58" vlookatmax="60"
+            fov="70" fovmin="40" fovmax="115" 
+            fisheye="0.0" limitview="range" 
+        />
+        
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="bedroom_0"
+            onhover="showtext(Bedroom);"
+            onclick="action(popup, bedroomstill);"
+
+            scale="0.95"
+        ath="-34.04245190840322" atv="-2.6214466433984325"  url="images/camera.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="bedroom1_1"
+            onhover="showtext(Bedroom);"
+            onclick="action(popup, bedroom1still);"
+
+            scale="1.0"
+        ath="21.64059772126774" atv="-1.9229119596159943"  url="images/camera.png">
+        
+        </hotspot>
+
+
+        <hotspot fillcolor ="0xffffff" fillalpha="0.10" borderwidth ="2.0" 
+            bordercolor    ="0xffffff" borderalpha    ="0.70"
+            fillcolorhover ="0xffffff" fillalphahover ="0.50" 
+            borderwidthhover="4.0" bordercolorhover="0xffffff" borderalphahover="0.80"
+            onloaded="if(device.mobile, mul(scale, 1.5));"
+            name="livingroom_2"
+            onhover="showtext(Living Room);"
+            onclick="loadtourscene(livingroom);"
+
+            scale="1.0"
+        ath="131.94905111642194" atv="-1.3447138260354752"  url="images/360_right.png">
+        
+        </hotspot>
+    </scene>
+</krpano>
+

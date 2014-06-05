@@ -1,0 +1,19 @@
+/****************************** Page Layout ***********************************/
+html, body {
+background-color: black;
+border: none;
+padding: 0px;
+margin: 0px;
+height: 100%;
+width: 100%;
+text-align: center;
+}
+
+/****************************** Movie Layout **********************************/
+
+#hc_placeholder {
+display: block;
+height: 100%;
+width: 100%; 
+}
+
