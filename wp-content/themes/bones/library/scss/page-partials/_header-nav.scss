@@ -33,8 +33,9 @@ and more scalable.
 
 #main-nav {
 	border-bottom: 0;
-	margin: 0;
-	background: image-url('navbg.png') no-repeat; 
+	margin: 0 auto;
+	background: image-url('navbg.png') no-repeat;
+	width: image-width('navbg.png');
 	height:60px; 
 	text-align: center;
 	@include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.5));
